@@ -1,39 +1,22 @@
-# Stage 1: Build the application
-FROM maven:3.8.4-openjdk-17 AS builder
+# Use the official OpenJDK base image
+FROM openjdk:21
 
-# Set the working directory
+# Set the working directory in the container
 WORKDIR /app
 
-# Copy only the POM file to cache dependencies
-COPY pom.xml .
+# Copy the JAR file into the container at /app
+COPY target/demo-0.0.1-SNAPSHOT.jar /app/demo-0.0.1-SNAPSHOT.jar
 
-# Download the dependencies
-RUN mvn dependency:go-offline
+# Install dependencies (if any) - adjust as needed
+# RUN apt-get update && apt-get install -y <your-dependency>
 
-# Copy the source code
-COPY src src
+# Expose the port your app runs on
+EXPOSE 8090
 
-# Build the application
-RUN mvn package -DskipTests
+# Define environment variables for database connection
+ENV DB_URL=jdbc:postgresql://127.0.0.1:5433/Book
+ENV DB_USERNAME=postgres
+ENV DB_PASSWORD=eyvazov313
 
-# Stage 2: Create a lightweight image with the JAR
-FROM openjdk:17-slim
-
-# Set the working directory
-WORKDIR /app
-
-# Copy the JAR from the builder stage
-COPY --from=builder /app/target/demo-0.0.1-SNAPSHOT.jar app.jar
-
-# Install PostgreSQL client and server
-RUN apt-get update && apt-get install -y postgresql postgresql-contrib
-
-# Copy the PostgreSQL configuration files
-COPY postgresql.conf /etc/postgresql/
-COPY pg_hba.conf /etc/postgresql/
-
-# Expose PostgreSQL port
-EXPOSE 5432
-
-# Start PostgreSQL and then your application
-CMD service postgresql start && java -jar app.jar
+# Command to run your application
+CMD ["java", "-jar", "demo-0.0.1-SNAPSHOT.jar"]
