@@ -6,13 +6,13 @@ services:
     environment:
       POSTGRES_DB: Book
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 12345678
+      POSTGRES_PASSWORD: 1234
 
   your_app:
     build: .
     depends_on:
       - postgres
     environment:
-      DATABASE_URL: postgres://postgres:12345678@postgres:5566/Book
+      DATABASE_URL: postgres://postgres:1234@postgres:5432/Book
     ports:
-      - "8090:8090"
+      - "8088:8080"
