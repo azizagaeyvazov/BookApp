@@ -1,5 +1,6 @@
 HELP.md
-target/
+#target/
+#if you want to not push target/ delete # from 2nd line
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
