@@ -16,11 +16,11 @@ services:
   app:
     depends_on:
       - postgresdb
-    build: ./BookApp
+    build: ./
     restart: on-failure
     env_file: ./.env
     ports:
-      - 8088:8080
+      - 8081:8081
     environment:
       SPRING_APPLICATION_JSON: '{
         "spring.datasource.url"  : "jdbc:postgresql://postgresdb:5432/Book",
