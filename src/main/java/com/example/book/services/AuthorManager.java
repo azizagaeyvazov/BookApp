@@ -5,6 +5,7 @@ import com.example.book.dto.author.response.AllAuthorsResponse;
 import com.example.book.entites.Author;
 import com.example.book.mapper.ModelMapperService;
 import com.example.book.repositories.AuthorRepository;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
