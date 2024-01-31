@@ -1,11 +1,11 @@
 package com.example.book.authentication;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.NotBlank;
 
 @Data
 @Builder
@@ -13,20 +13,16 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 public class ReaderRegisterRequest {
 
-    @NotBlank
+    @NotNull(message = "'name' can not be null")
+    @NotBlank(message = "'name' can not be empty")
     private String name;
-    @NotBlank
+    @NotNull(message = "'surname' can not be null")
+    @NotBlank(message = "'surname' can not be empty")
     private String surname;
-    @NotBlank
+    @NotNull(message = "'username' can not be null")
+    @NotBlank(message = "'username' can not be empty")
     private String username;
-    @NotBlank
+    @NotNull(message = "'password' can not be null")
+    @NotBlank(message = "'password' can not be empty")
     private String password;
-
-
-//    public boolean fieldsAreEmptyOrNull(ReaderRegisterRequest request) {
-//        return request.getName() == null || request.getName().isEmpty() ||
-//                request.getSurname() == null || request.getSurname().isEmpty() ||
-//                request.getUsername() == null || request.getUsername().isEmpty() ||
-//                request.getPassword() == null || request.getPassword().isEmpty();
-//    }
 }
