@@ -1,8 +1,7 @@
 package com.example.book.services;
 
-import com.example.book.dto.author.request.AuthorCreateRequest;
-import com.example.book.dto.book.request.BookCreateRequest;
-import com.example.book.dto.book.response.AllBooksResponse;
+import com.example.book.dto.BookCreateRequest;
+import com.example.book.dto.AllBooksResponse;
 import com.example.book.entites.Author;
 import com.example.book.entites.Book;
 import com.example.book.mapper.ModelMapperService;
