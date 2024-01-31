@@ -41,7 +41,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register/reader")
-    public ResponseEntity<AuthenticationResponse> readerRegister(@RequestBody ReaderRegisterRequest request) {
+    public ResponseEntity<AuthenticationResponse> readerRegister(@Valid @RequestBody ReaderRegisterRequest request) {
         if (service.readerExistsByUsername(request.getUsername())) {
             return ResponseEntity.status(HttpStatus.CONFLICT)
                     .body(new AuthenticationResponse("Username already exists"));
