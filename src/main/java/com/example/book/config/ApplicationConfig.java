@@ -22,8 +22,8 @@ import java.util.Optional;
 public class ApplicationConfig {
 
     private final AuthorRepository authorRepository;
-    private final ReaderRepository readerRepository;
 
+    private final ReaderRepository readerRepository;
 
     @Bean
     public UserDetailsService userDetailsService(){

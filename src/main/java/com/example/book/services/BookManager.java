@@ -1,13 +1,16 @@
 package com.example.book.services;
 
-import com.example.book.dto.BookCreateRequest;
+import com.example.book.dto.CreateBookRequest;
 import com.example.book.dto.AllBooksResponse;
 import com.example.book.entites.Author;
 import com.example.book.entites.Book;
+import com.example.book.exception.UserNotFound;
 import com.example.book.mapper.ModelMapperService;
 import com.example.book.repositories.AuthorRepository;
 import com.example.book.repositories.BookRepository;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.annotations.NotFound;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,11 +35,13 @@ public class BookManager implements BookService {
     }
 
     @Override
-    public void add(BookCreateRequest bookRequest, int authorId) {
-        Optional<Author> author = Optional.ofNullable(authorRepository.findFirstBy().orElseThrow(NullPointerException::new));
-        bookRequest.setAuthor(author.get());
-        Book book = modelMapperService.forRequest().map(bookRequest, Book.class);
-        bookRepository.save(book);
+    public void add(CreateBookRequest bookRequest, int authorId) {
+        Optional<Author> author = authorRepository.findById(authorId);
+        if (author.isPresent()){
+            bookRequest.setAuthor(author.get());
+            Book book = modelMapperService.forRequest().map(bookRequest, Book.class);
+            bookRepository.save(book);
+        } else throw new UserNotFound("Author not found with given id");
     }
     @Override
     public void delete(int id) {

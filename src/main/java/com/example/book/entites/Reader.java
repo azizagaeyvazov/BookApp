@@ -32,6 +32,14 @@ public class Reader implements UserDetails {
     @Enumerated
     Role role;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "reader_favorite_books",
+            joinColumns = @JoinColumn(name = "reader_id"),
+            inverseJoinColumns = @JoinColumn(name = "book_id")
+    )
+    private List<Book> favoriteBooks;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));

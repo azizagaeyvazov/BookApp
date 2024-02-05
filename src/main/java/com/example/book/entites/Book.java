@@ -1,8 +1,9 @@
 package com.example.book.entites;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
+
+import java.util.List;
 
 @Entity
 @Data
@@ -18,4 +19,7 @@ public class Book {
     @ManyToOne
     @JoinColumn(name="author_id", nullable=false)
     private Author author;
+
+    @ManyToMany(mappedBy = "favoriteBooks")
+    private List<Reader> readers;
 }

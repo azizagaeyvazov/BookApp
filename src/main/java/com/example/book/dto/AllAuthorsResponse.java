@@ -10,6 +10,4 @@ public class AllAuthorsResponse {
     private String name;
 
     private String surname;
-
-    //private List<Book> books;
 }

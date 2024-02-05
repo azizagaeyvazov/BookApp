@@ -15,15 +15,16 @@ import java.util.stream.Collectors;
 public class AuthorManager implements AuthorService {
 
     private final AuthorRepository authorRepository;
+
     private final ModelMapperService modelMapperService;
+
     @Override
     public List<AllAuthorsResponse> getAll() {
-
         List<Author> authors = authorRepository.findAll();
-        List<AllAuthorsResponse> authorsResponses = authors.stream().map(author -> this.modelMapperService.forResponse()
+        List<AllAuthorsResponse> authorsResponse = authors.stream().map(author -> this.modelMapperService.forResponse()
                 .map(author, AllAuthorsResponse.class)).collect(Collectors.toList());
 
-        return authorsResponses;
+        return authorsResponse;
     }
 
     @Override
