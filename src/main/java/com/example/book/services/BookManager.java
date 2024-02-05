@@ -1,7 +1,7 @@
 package com.example.book.services;
 
-import com.example.book.dto.CreateBookRequest;
-import com.example.book.dto.AllBooksResponse;
+import com.example.book.dto.BookRequest;
+import com.example.book.dto.BookResponse;
 import com.example.book.entites.Author;
 import com.example.book.entites.Book;
 import com.example.book.exception.UserNotFound;
@@ -9,8 +9,6 @@ import com.example.book.mapper.ModelMapperService;
 import com.example.book.repositories.AuthorRepository;
 import com.example.book.repositories.BookRepository;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.annotations.NotFound;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,17 +23,17 @@ public class BookManager implements BookService {
     private final ModelMapperService modelMapperService;
 
     @Override
-    public List<AllBooksResponse> getAll(){
+    public List<BookResponse> getAll(){
 
         List<Book> books = bookRepository.findAll();
-        List<AllBooksResponse> booksResponses = books.stream().map(book -> this.modelMapperService.forResponse()
-                .map(book, AllBooksResponse.class)).collect(Collectors.toList());
+        List<BookResponse> bookRespons = books.stream().map(book -> this.modelMapperService.forResponse()
+                .map(book, BookResponse.class)).collect(Collectors.toList());
 
-        return booksResponses;
+        return bookRespons;
     }
 
     @Override
-    public void add(CreateBookRequest bookRequest, int authorId) {
+    public void add(BookRequest bookRequest, Long authorId) {
         Optional<Author> author = authorRepository.findById(authorId);
         if (author.isPresent()){
             bookRequest.setAuthor(author.get());
@@ -44,7 +42,7 @@ public class BookManager implements BookService {
         } else throw new UserNotFound("Author not found with given id");
     }
     @Override
-    public void delete(int id) {
+    public void delete(Long id) {
         bookRepository.deleteById(id);
     }
 }

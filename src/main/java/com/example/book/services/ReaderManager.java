@@ -1,6 +1,6 @@
 package com.example.book.services;
 
-import com.example.book.dto.AllReadersResponse;
+import com.example.book.dto.ReaderResponse;
 import com.example.book.entites.Book;
 import com.example.book.entites.Reader;
 import com.example.book.mapper.ModelMapperService;
@@ -28,19 +28,35 @@ public class ReaderManager implements ReaderService {
     private final BookRepository bookRepository;
 
     @Override
-    public List<AllReadersResponse> getAll() {
+    public List<ReaderResponse> getAll() {
         List<Reader> readers = readerRepository.findAll();
-        return readers.stream().map(reader -> this.modelMapperService.forResponse()
-                .map(reader, AllReadersResponse.class)).collect(Collectors.toList());
+            return readers.stream().map(reader -> this.modelMapperService.forResponse()
+                    .map(reader, ReaderResponse.class)).collect(Collectors.toList());
     }
+
     @Override
-    public void addBookToFavoriteList(Integer bookId) {
+    public void addBookToFavoriteList(Long bookId) {
         Reader loggedInReader = getLoggedInReader();
 
         Book book = bookRepository.findById(bookId).orElseThrow(() -> new EntityNotFoundException("Book not found"));
-
+        List<Book> favoriteList = loggedInReader.getFavoriteBooks();
+        if (favoriteList.contains(book)){
+            log.info("The book is already exists in your favorite list");
+            return;
+        }
         loggedInReader.getFavoriteBooks().add(book);
         readerRepository.save(loggedInReader);
+    }
+
+    @Override
+    public void deleteBookFromFavorites(Long bookId) {
+        Reader loggedInReader = getLoggedInReader();
+
+        Book book = bookRepository.findById(bookId).orElseThrow(() -> new EntityNotFoundException("Book not found"));
+        List<Book> favoriteList = loggedInReader.getFavoriteBooks();
+        if (favoriteList.contains(book)){
+            favoriteList.remove(book);
+        } else throw new RuntimeException("You don't have this book in your favorite list.");
     }
 
     private Reader getLoggedInReader() {

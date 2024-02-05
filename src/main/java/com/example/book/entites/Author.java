@@ -21,7 +21,7 @@ public class Author implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
-    Integer id;
+    Long id;
 
     String name;
 

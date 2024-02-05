@@ -1,13 +1,15 @@
 package com.example.book.services;
 
-import com.example.book.dto.AllReadersResponse;
+import com.example.book.dto.ReaderResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
 public interface ReaderService {
 
-    List<AllReadersResponse> getAll();
+    List<ReaderResponse> getAll();
 
-    void addBookToFavoriteList(Integer bookId);
+    void addBookToFavoriteList(Long bookId);
+
+    void deleteBookFromFavorites(Long bookId);
 }

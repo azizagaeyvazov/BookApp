@@ -3,13 +3,13 @@ package com.example.book.dto;
 import lombok.Data;
 
 @Data
-public class AllBooksResponse {
+public class BookResponse {
 
-    private Integer id;
+    private Long id;
 
     private String title;
 
     private Long page;
 
-    private AllAuthorsResponse author;
+    private AuthorResponse author;
 }

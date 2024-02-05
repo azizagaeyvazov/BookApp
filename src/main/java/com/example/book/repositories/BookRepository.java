@@ -7,7 +7,5 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface BookRepository extends JpaRepository<Book, Integer>{
-
-    //Book findBookById(Integer id);
+public interface BookRepository extends JpaRepository<Book, Long>{
 }

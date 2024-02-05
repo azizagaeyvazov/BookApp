@@ -3,9 +3,9 @@ package com.example.book.dto;
 import lombok.Data;
 
 @Data
-public class AllAuthorsResponse {
+public class AuthorResponse {
 
-    private Integer id;
+    private Long id;
 
     private String name;
 

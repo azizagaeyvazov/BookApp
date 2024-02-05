@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NonNull;
 
 @Data
-public class CreateBookRequest {
+public class BookRequest {
 
     @NonNull
     String title;

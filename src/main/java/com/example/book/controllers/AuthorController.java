@@ -1,35 +1,35 @@
 package com.example.book.controllers;
 
-import com.example.book.dto.AllAuthorsResponse;
-import com.example.book.dto.CreateBookRequest;
+import com.example.book.dto.AuthorResponse;
+import com.example.book.dto.BookRequest;
 import com.example.book.services.AuthorService;
-import com.example.book.services.BookService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("api/bookapp/authors")
+@RequestMapping("api/book-app/authors")
 @RequiredArgsConstructor
 public class AuthorController {
 
     private final AuthorService authorService;
 
-    private final BookService bookService;
-
     @GetMapping
-    public List<AllAuthorsResponse> getAll(){
+    public List<AuthorResponse> getAllAuthors(){
         return authorService.getAll();
     }
 
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable int id){
-        authorService.delete(id);
+    @PostMapping("/book")
+    public ResponseEntity<String> addBook(@RequestBody BookRequest bookRequest){
+        authorService.addBook(bookRequest);
+        return ResponseEntity.ok("The book is added.");
     }
 
-//    @PostMapping
-//    public void addBook(@RequestBody CreateBookRequest createBookRequest){
-//
-//    }
+    @DeleteMapping("/book/{bookId}")
+    public ResponseEntity<String> deleteBook(@PathVariable Long bookId){
+        authorService.deleteBook(bookId);
+        return ResponseEntity.ok("The book is deleted.");
+    }
 }

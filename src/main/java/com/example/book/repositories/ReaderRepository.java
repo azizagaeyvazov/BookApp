@@ -7,8 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface ReaderRepository extends JpaRepository<Reader, Integer> {
-
+public interface ReaderRepository extends JpaRepository<Reader, Long> {
     Optional<Reader> findByUsername(String username);
-
 }

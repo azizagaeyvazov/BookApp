@@ -1,7 +1,7 @@
 package com.example.book.services;
 
-import com.example.book.dto.CreateBookRequest;
-import com.example.book.dto.AllBooksResponse;
+import com.example.book.dto.BookRequest;
+import com.example.book.dto.BookResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,9 +9,9 @@ import java.util.List;
 @Service
 public interface BookService {
 
-    List<AllBooksResponse> getAll();
+    List<BookResponse> getAll();
 
-    void add(CreateBookRequest bookRequest, int authorId);
+    void add(BookRequest bookRequest, Long authorId);
 
-    void delete(int id);
+    void delete(Long id);
 }
