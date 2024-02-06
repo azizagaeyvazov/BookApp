@@ -1,4 +1,4 @@
-package com.example.book;
+package com.example.book.swagger;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
