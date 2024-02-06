@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -42,11 +43,25 @@ public class AuthorManager implements AuthorService {
         List<Book> bookList = loggedInAuthor.getBookList();
 
         Book book = modelMapperService.forRequest().map(bookRequest, Book.class);
-        if (bookList.contains(book)){
+        book.setAuthor(loggedInAuthor);
+        if (bookAlreadyExistsInList(bookList, book)){
             log.info("You have already added this book.");
             return;
         }
         bookList.add(book);
+        bookRepository.save(book);
+        authorRepository.save(loggedInAuthor);
+    }
+
+    private boolean bookAlreadyExistsInList(List<Book> bookList, Book book) {
+        for (Book existingBook : bookList) {
+            if ((Objects.equals(existingBook.getPage(),book.getPage())) &&
+                    (Objects.equals(existingBook.getTitle(), book.getTitle())) &&
+                    (Objects.equals(existingBook.getAuthor(), book.getAuthor()))){
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

@@ -24,7 +24,7 @@ public class AuthorController {
     @PostMapping("/book")
     public ResponseEntity<String> addBook(@RequestBody BookRequest bookRequest){
         authorService.addBook(bookRequest);
-        return ResponseEntity.ok("The book is added.");
+        return ResponseEntity.ok("book is created");
     }
 
     @DeleteMapping("/book/{bookId}")

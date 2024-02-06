@@ -12,7 +12,4 @@ public class BookRequest {
 
     @NonNull
     Long page;
-
-    @NonNull
-    Author author;
 }

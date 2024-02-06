@@ -2,6 +2,7 @@ package com.example.book.entites;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 
 import java.util.List;
 
@@ -20,6 +21,16 @@ public class Book {
     @JoinColumn(name="author_id", nullable=false)
     private Author author;
 
-    @ManyToMany(mappedBy = "favoriteBooks")
+    @ManyToMany(mappedBy = "favoriteBooks", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Reader> readers;
+
+
+    @Override
+    public String toString() {
+        return "Book{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", page=" + page +
+                '}';
+    }
 }

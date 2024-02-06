@@ -1,5 +1,6 @@
 package com.example.book.config;
 
+import com.example.book.enums.Role.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,6 +30,10 @@ public class SecurityConfiguration {
                 .permitAll()
                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**")
                 .permitAll()
+//                .requestMatchers("/api/book-app/authors/**")
+//                .hasRole("AUTHOR")
+//                .requestMatchers("/api/book-app/readers/**")
+//                .hasRole("READER")
                 .anyRequest()
                 .authenticated()
                 .and()
