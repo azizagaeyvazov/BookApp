@@ -1,18 +1,37 @@
-version: '3'
+version: "3.8"
 
 services:
-  postgres:
-    image: postgres:latest
+  postgresdb:
+    image: postgres
+    restart: unless-stopped
+    env_file: ./.env
     environment:
-      POSTGRES_DB: Book
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-
-  your_app:
-    build: .
-    depends_on:
-      - postgres
-    environment:
-      DATABASE_URL: postgres://postgres:postgres@postgres:5432/Book
+      - POSTGRES_USER=book_iivf_user
+      - POSTGRES_PASSWORD=Nxto1Q1i2j7EXitQCdyyGjuUEOjYoQAK
+      - POSTGRES_DB=book_iivf
     ports:
-      - "8090:8090"
+      - 5432:5432
+    volumes:
+      - db:/var/lib/postgres
+  app:
+    depends_on:
+      - postgresdb
+    build: ./
+    restart: on-failure
+    env_file: ./.env
+    ports:
+      - 8081:8081
+    environment:
+      SPRING_APPLICATION_JSON: '{
+        "spring.datasource.url"  : "jdbc:postgresql://dpg-cmnnqpgl5elc738mobig-a.frankfurt-postgres.render.com/book_iivf",
+        "spring.datasource.username" : "book_iivf_user",
+        "spring.datasource.password" : "Nxto1Q1i2j7EXitQCdyyGjuUEOjYoQAK",
+        "spring.jpa.hibernate.ddl-auto" : "update"
+      }'
+    volumes:
+      - .m2:/root/.m2
+    stdin_open: true
+    tty: true
+
+volumes:
+  db:

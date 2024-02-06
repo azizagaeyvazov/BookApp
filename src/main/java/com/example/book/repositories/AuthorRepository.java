@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface AuthorRepository extends JpaRepository<Author, Integer> {
-
-    Optional<Author> findFirstBy();
+public interface AuthorRepository extends JpaRepository<Author, Long> {
+    Optional<Author> findByUsername(String username);
 }

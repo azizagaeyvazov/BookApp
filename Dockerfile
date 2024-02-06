@@ -20,7 +20,7 @@ WORKDIR /app
 COPY --from=build /app/target/demo-0.0.1-SNAPSHOT.jar .
 
 # Expose the port the app runs on
-EXPOSE 8090
+EXPOSE 8081
 
 # Define environment variable
 ENV NAME World

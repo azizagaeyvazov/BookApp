@@ -1,7 +1,7 @@
 package com.example.book.services;
 
-import com.example.book.dto.author.request.AuthorCreateRequest;
-import com.example.book.dto.author.response.AllAuthorsResponse;
+import com.example.book.dto.AuthorResponse;
+import com.example.book.dto.BookRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,9 +9,9 @@ import java.util.List;
 @Service
 public interface AuthorService {
 
-    List<AllAuthorsResponse> getAll();
+    List<AuthorResponse> getAll();
 
-    void add(AuthorCreateRequest authorRequest);
+    void addBook(BookRequest bookRequest);
 
-    void delete(int id);
+    void deleteBook(Long bookId) throws RuntimeException;
 }
