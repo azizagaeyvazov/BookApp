@@ -13,7 +13,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AuthorAuthenticationRequest {
 
+    @NotNull(message = "username can not be null")
+    @NotBlank(message = "username can not be empty")
     private String username;
 
+    @NotNull(message = "username can not be null")
+    @NotBlank(message = "username can not be empty")
     private String password;
 }

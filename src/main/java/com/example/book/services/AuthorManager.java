@@ -1,12 +1,15 @@
 package com.example.book.services;
 
+import com.example.book.dto.AuthorDetails;
 import com.example.book.dto.AuthorResponse;
+import com.example.book.dto.AuthorUpdateRequest;
 import com.example.book.dto.BookRequest;
 import com.example.book.entites.Author;
 import com.example.book.entites.Book;
 import com.example.book.mapper.ModelMapperService;
 import com.example.book.repositories.AuthorRepository;
 import com.example.book.repositories.BookRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -44,43 +47,66 @@ public class AuthorManager implements AuthorService {
 
         Book book = modelMapperService.forRequest().map(bookRequest, Book.class);
         book.setAuthor(loggedInAuthor);
-        if (bookAlreadyExistsInList(bookList, book)){
-            log.info("You have already added this book.");
-            return;
+        if (bookExistsInList(bookList, book)) {
+            throw new IllegalArgumentException("Book already exists");
         }
         bookList.add(book);
         bookRepository.save(book);
         authorRepository.save(loggedInAuthor);
     }
 
-    private boolean bookAlreadyExistsInList(List<Book> bookList, Book book) {
-        for (Book existingBook : bookList) {
-            if ((Objects.equals(existingBook.getPage(),book.getPage())) &&
-                    (Objects.equals(existingBook.getTitle(), book.getTitle())) &&
-                    (Objects.equals(existingBook.getAuthor(), book.getAuthor()))){
-                return true;
-            }
-        }
-        return false;
-    }
-
     @Override
-    public void deleteBook(Long bookId){
+    public void deleteBook(Long bookId) {
         Author loggedInAuthor = getLoggedInAuthor();
-        Book book = bookRepository.findById(bookId).orElseThrow(()-> new RuntimeException("There is no a book with this id."));
+        Book book = bookRepository.findById(bookId).orElseThrow(() -> new RuntimeException("There is no a book with this id."));
         List<Book> bookList = loggedInAuthor.getBookList();
-        if (bookList.contains(book)){
+        if (bookExistsInList(bookList, book)) {
             bookRepository.deleteById(bookId);
         } else {
             throw new NoSuchElementException("You don't have a book with this id.");
         }
     }
 
+    @Override
+    public AuthorDetails getAuthorDetails() {
+        return modelMapperService.forResponse().map(getLoggedInAuthor(), AuthorDetails.class);
+    }
+
+    @Override
+    public void updateAuthor(AuthorUpdateRequest updateRequest) {
+        if (updateRequest == null){
+            throw new NullPointerException("Update failed");
+        }
+        if (updateRequest.getName() != null){
+            if (updateRequest.getName().isBlank()){
+                throw new NullPointerException("name can not be blank");
+            }
+            getLoggedInAuthor().setName(updateRequest.getName());
+        }
+        if (updateRequest.getSurname() != null){
+            if (updateRequest.getSurname().isBlank()){
+                throw new NullPointerException("surname can not be blank");
+            }
+            getLoggedInAuthor().setSurname(updateRequest.getSurname());
+        }
+        authorRepository.save(getLoggedInAuthor());
+    }
+
+    private boolean bookExistsInList(List<Book> bookList, Book book) {
+        for (Book existingBook : bookList) {
+            if ((Objects.equals(existingBook.getPage(), book.getPage())) &&
+                    (Objects.equals(existingBook.getTitle(), book.getTitle()))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private Author getLoggedInAuthor() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication == null || !authentication.isAuthenticated() || !(authentication.getPrincipal() instanceof Author)) {
-            throw new IllegalStateException("User not authenticated or not of Author type");
+            throw new IllegalStateException("Author not authenticated or not of Author type");
         }
         return (Author) authentication.getPrincipal();
     }
