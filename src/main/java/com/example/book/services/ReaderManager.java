@@ -6,6 +6,8 @@ import com.example.book.dto.ReaderResponse;
 import com.example.book.dto.ReaderUpdateRequest;
 import com.example.book.entites.Book;
 import com.example.book.entites.Reader;
+import com.example.book.exception.BookNotFound;
+import com.example.book.exception.InvalidAuthenticationCredentials;
 import com.example.book.mapper.ModelMapperService;
 import com.example.book.repositories.BookRepository;
 import com.example.book.repositories.ReaderRepository;
@@ -47,7 +49,7 @@ public class ReaderManager implements ReaderService {
         Book book = bookRepository.findById(bookId).orElseThrow(() -> new EntityNotFoundException("Book not found"));
         List<Book> favoriteList = loggedInReader.getFavoriteBooks();
         if (bookExistsInList(favoriteList, book)) {
-            throw new EntityExistsException("The book is already exists in your favorite list");
+            throw new EntityExistsException("The book already exists in your favorite list");
         }
         loggedInReader.getFavoriteBooks().add(book);
         readerRepository.save(loggedInReader);
@@ -62,7 +64,7 @@ public class ReaderManager implements ReaderService {
         if (favoriteList.removeIf(b -> b.getId().equals(book.getId()))) {
             loggedInReader.setFavoriteBooks(favoriteList);
             readerRepository.save(loggedInReader);
-        } else throw new RuntimeException("You don't have this book in your favorite list.");
+        } else throw new BookNotFound("You don't have this book in your favorite list.");
     }
 
     @Override
@@ -73,7 +75,7 @@ public class ReaderManager implements ReaderService {
     @Override
     public void updateReader(ReaderUpdateRequest updateRequest) {
         if (updateRequest == null){
-            throw new NullPointerException("Update failed");
+            throw new NullPointerException("request parameters can not be null");
         }
         if (updateRequest.getName() != null){
             if (updateRequest.getName().isBlank()){
@@ -96,7 +98,7 @@ public class ReaderManager implements ReaderService {
             String hashedNewPass = BCrypt.hashpw(updateRequest.getNewPassword(), BCrypt.gensalt());
             getLoggedInReader().setPassword(hashedNewPass);
             readerRepository.save(getLoggedInReader());
-        } else throw new RuntimeException("password is wrong");
+        } else throw new InvalidAuthenticationCredentials("password is wrong");
     }
 
     private boolean bookExistsInList(List<Book> bookList, Book book) {

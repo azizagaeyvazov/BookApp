@@ -6,9 +6,9 @@ services:
     restart: unless-stopped
     env_file: ./.env
     environment:
-      - POSTGRES_USER=book_iivf_user
-      - POSTGRES_PASSWORD=Nxto1Q1i2j7EXitQCdyyGjuUEOjYoQAK
-      - POSTGRES_DB=book_iivf
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_DB=postgres
     ports:
       - 5432:5432
     volumes:
@@ -20,12 +20,12 @@ services:
     restart: on-failure
     env_file: ./.env
     ports:
-      - 8081:8081
+      - 8080:8080
     environment:
       SPRING_APPLICATION_JSON: '{
-        "spring.datasource.url"  : "jdbc:postgresql://dpg-cmnnqpgl5elc738mobig-a.frankfurt-postgres.render.com/book_iivf",
-        "spring.datasource.username" : "book_iivf_user",
-        "spring.datasource.password" : "Nxto1Q1i2j7EXitQCdyyGjuUEOjYoQAK",
+        "spring.datasource.url"  : "jdbc:postgresql://localhost:5432/postgres",
+        "spring.datasource.username" : "postgres",
+        "spring.datasource.password" : "1234",
         "spring.jpa.hibernate.ddl-auto" : "update"
       }'
     volumes:

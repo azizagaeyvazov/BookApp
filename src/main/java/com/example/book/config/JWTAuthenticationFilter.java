@@ -30,6 +30,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
+        System.out.println("Filter start: " +System.currentTimeMillis());
         final String authHeader = request.getHeader("Authorization");
         final String jwt;
         final String username;
@@ -53,6 +54,10 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
         }
+        System.out.println("Filter end1: " +System.currentTimeMillis());
+
         filterChain.doFilter(request, response);
+        System.out.println("Filter end2: " +System.currentTimeMillis());
+
     }
 }
