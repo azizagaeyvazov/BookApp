@@ -1,9 +1,6 @@
 package com.example.book.services;
 
-import com.example.book.dto.AuthorDetails;
-import com.example.book.dto.AuthorResponse;
-import com.example.book.dto.AuthorUpdateRequest;
-import com.example.book.dto.BookRequest;
+import com.example.book.dto.*;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,4 +17,6 @@ public interface AuthorService {
     AuthorDetails getAuthorDetails();
 
     void updateAuthor(AuthorUpdateRequest updateRequest);
+
+    void updatePassword(PassUpdateRequest updateRequest);
 }

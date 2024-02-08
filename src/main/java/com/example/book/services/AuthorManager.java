@@ -1,9 +1,6 @@
 package com.example.book.services;
 
-import com.example.book.dto.AuthorDetails;
-import com.example.book.dto.AuthorResponse;
-import com.example.book.dto.AuthorUpdateRequest;
-import com.example.book.dto.BookRequest;
+import com.example.book.dto.*;
 import com.example.book.entites.Author;
 import com.example.book.entites.Book;
 import com.example.book.mapper.ModelMapperService;
@@ -12,8 +9,11 @@ import com.example.book.repositories.BookRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.messaging.handler.annotation.support.MethodArgumentNotValidException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -74,22 +74,31 @@ public class AuthorManager implements AuthorService {
 
     @Override
     public void updateAuthor(AuthorUpdateRequest updateRequest) {
-        if (updateRequest == null){
+        if (updateRequest == null) {
             throw new NullPointerException("Update failed");
         }
-        if (updateRequest.getName() != null){
-            if (updateRequest.getName().isBlank()){
+        if (updateRequest.getName() != null) {
+            if (updateRequest.getName().isBlank()) {
                 throw new NullPointerException("name can not be blank");
             }
             getLoggedInAuthor().setName(updateRequest.getName());
         }
-        if (updateRequest.getSurname() != null){
-            if (updateRequest.getSurname().isBlank()){
+        if (updateRequest.getSurname() != null) {
+            if (updateRequest.getSurname().isBlank()) {
                 throw new NullPointerException("surname can not be blank");
             }
             getLoggedInAuthor().setSurname(updateRequest.getSurname());
         }
         authorRepository.save(getLoggedInAuthor());
+    }
+
+    @Override
+    public void updatePassword(PassUpdateRequest updateRequest) {
+        if (BCrypt.checkpw(updateRequest.getPassword(), getLoggedInAuthor().getPassword())) {
+            String hashedNewPass = BCrypt.hashpw(updateRequest.getNewPassword(), BCrypt.gensalt());
+            getLoggedInAuthor().setPassword(hashedNewPass);
+            authorRepository.save(getLoggedInAuthor());
+        } else throw new RuntimeException("password is wrong");
     }
 
     private boolean bookExistsInList(List<Book> bookList, Book book) {

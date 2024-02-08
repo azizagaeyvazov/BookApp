@@ -1,9 +1,6 @@
 package com.example.book.controllers;
 
-import com.example.book.dto.AuthorUpdateRequest;
-import com.example.book.dto.ReaderDetails;
-import com.example.book.dto.ReaderResponse;
-import com.example.book.dto.ReaderUpdateRequest;
+import com.example.book.dto.*;
 import com.example.book.services.ReaderService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
@@ -46,6 +43,16 @@ public class ReaderController {
             readerService.updateReader(updateRequest);
             return ResponseEntity.ok("Reader is updated.");
         } catch (NullPointerException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/pass")
+    public ResponseEntity<String> updatePassword(@Valid @RequestBody PassUpdateRequest passUpdateRequest){
+        try {
+            readerService.updatePassword(passUpdateRequest);
+            return ResponseEntity.ok("password updated");
+        } catch (RuntimeException e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }

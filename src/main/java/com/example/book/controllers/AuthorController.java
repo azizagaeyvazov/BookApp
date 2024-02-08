@@ -1,13 +1,11 @@
 package com.example.book.controllers;
 
-import com.example.book.dto.AuthorDetails;
-import com.example.book.dto.AuthorResponse;
-import com.example.book.dto.AuthorUpdateRequest;
-import com.example.book.dto.BookRequest;
+import com.example.book.dto.*;
 import com.example.book.services.AuthorService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -50,6 +48,18 @@ public class AuthorController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    @PutMapping("/pass")
+    public ResponseEntity<String> updatePassword(@Valid @RequestBody PassUpdateRequest passUpdateRequest){
+        try {
+            authorService.updatePassword(passUpdateRequest);
+            return ResponseEntity.ok("password updated");
+        } catch (RuntimeException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+
 
     @DeleteMapping("/book/{bookId}")
     public ResponseEntity<String> deleteBook(@PathVariable Long bookId){

@@ -23,14 +23,4 @@ public class Book {
 
     @ManyToMany(mappedBy = "favoriteBooks", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Reader> readers;
-
-
-    @Override
-    public String toString() {
-        return "Book{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", page=" + page +
-                '}';
-    }
 }

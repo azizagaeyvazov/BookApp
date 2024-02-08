@@ -1,5 +1,6 @@
 package com.example.book.services;
 
+import com.example.book.dto.PassUpdateRequest;
 import com.example.book.dto.ReaderDetails;
 import com.example.book.dto.ReaderResponse;
 import com.example.book.dto.ReaderUpdateRequest;
@@ -18,4 +19,6 @@ public interface ReaderService {
     ReaderDetails getReaderDetails();
 
     void updateReader(ReaderUpdateRequest updateRequest);
+
+    void updatePassword(PassUpdateRequest updateRequest);
 }

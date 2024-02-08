@@ -1,5 +1,6 @@
 package com.example.book.services;
 
+import com.example.book.dto.PassUpdateRequest;
 import com.example.book.dto.ReaderDetails;
 import com.example.book.dto.ReaderResponse;
 import com.example.book.dto.ReaderUpdateRequest;
@@ -14,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -86,6 +88,15 @@ public class ReaderManager implements ReaderService {
             getLoggedInReader().setSurname(updateRequest.getSurname());
         }
         readerRepository.save(getLoggedInReader());
+    }
+
+    @Override
+    public void updatePassword(PassUpdateRequest updateRequest) {
+        if (BCrypt.checkpw(updateRequest.getPassword(), getLoggedInReader().getPassword())) {
+            String hashedNewPass = BCrypt.hashpw(updateRequest.getNewPassword(), BCrypt.gensalt());
+            getLoggedInReader().setPassword(hashedNewPass);
+            readerRepository.save(getLoggedInReader());
+        } else throw new RuntimeException("password is wrong");
     }
 
     private boolean bookExistsInList(List<Book> bookList, Book book) {
