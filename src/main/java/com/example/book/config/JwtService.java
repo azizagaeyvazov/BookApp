@@ -5,14 +5,18 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.function.Function;
 
 @Service
+@Slf4j
 public class JwtService {
 
     private static final String SECRET_KEY = "dff14e1c1f9f4bd13768aef725edac9f325ff8917463e0acb324b3f332d3fa67da873cced2e011f71078ad28f4580cbd436246d9e72cf5aca1b3d45903003efb";

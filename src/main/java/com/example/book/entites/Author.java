@@ -71,16 +71,4 @@ public class Author implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-
-    @Override
-    public String toString() {
-        return "Author{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", surname='" + surname + '\'' +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", role='" + role + '\'' +
-                '}';
-    }
 }

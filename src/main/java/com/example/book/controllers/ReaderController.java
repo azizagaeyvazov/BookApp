@@ -1,7 +1,9 @@
 package com.example.book.controllers;
 
-import com.example.book.dto.ReaderResponse;
+import com.example.book.dto.*;
 import com.example.book.services.ReaderService;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,13 +22,42 @@ public class ReaderController {
         return readerService.getAll();
     }
 
-    @PostMapping("/favorite-book")
-    public ResponseEntity<String> addFavoriteBook(@RequestParam Long bookId){
-        readerService.addBookToFavoriteList(bookId);
-        return ResponseEntity.ok("The book is added to favorite list.");
+    @GetMapping("/me")
+    public ReaderDetails getReaderDetails(){
+        return readerService.getReaderDetails();
     }
 
-    @DeleteMapping("/favorite-book/{bookId}")
+    @PostMapping("/favorite")
+    public ResponseEntity<String> addFavoriteBook(@RequestParam Long bookId){
+        try {
+            readerService.addBookToFavoriteList(bookId);
+            return ResponseEntity.ok("The book is added to favorite list.");
+        } catch (EntityNotFoundException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PutMapping
+    public ResponseEntity<String> updateReader(@Valid @RequestBody ReaderUpdateRequest updateRequest){
+        try{
+            readerService.updateReader(updateRequest);
+            return ResponseEntity.ok("Reader is updated.");
+        } catch (NullPointerException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/pass")
+    public ResponseEntity<String> updatePassword(@Valid @RequestBody PassUpdateRequest passUpdateRequest){
+        try {
+            readerService.updatePassword(passUpdateRequest);
+            return ResponseEntity.ok("password updated");
+        } catch (RuntimeException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/favorite/{bookId}")
     public ResponseEntity<String> deleteBookFromFavorites(@PathVariable Long bookId){
         readerService.deleteBookFromFavorites(bookId);
         return ResponseEntity.ok("The book is deleted from you favorite list.");

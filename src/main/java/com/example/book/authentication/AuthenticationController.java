@@ -35,7 +35,7 @@ public class AuthenticationController {
 
     @PostMapping("/authenticate/author")
     public ResponseEntity<AuthenticationResponse> authenticate(
-            @RequestBody AuthorAuthenticationRequest request
+            @Valid @RequestBody AuthorAuthenticationRequest request
     )
     {
         if (!service.validAuthorUsernameAndPassword(request.getUsername(), request.getPassword())){
