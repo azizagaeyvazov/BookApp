@@ -27,11 +27,16 @@ public class AuthorController {
         return authorService.getAuthorDetails();
     }
 
+    @GetMapping("/books/{bookId}/readers")
+    public List<ReaderResponse> getReadersByBookId(@PathVariable Long bookId){
+        return authorService.getReadersByBookId(bookId);
+    }
+
 
     @PostMapping("/book")
-    public ResponseEntity<String> addBook(@Valid @RequestBody BookRequest bookRequest){
+    public ResponseEntity<String> addBook(@Valid @RequestBody BookCreateRequest bookCreateRequest){
         try {
-            authorService.addBook(bookRequest);
+            authorService.addBook(bookCreateRequest);
             return ResponseEntity.ok("book is created");
         } catch (IllegalArgumentException e){
             return ResponseEntity.badRequest().body(e.getMessage());

@@ -10,7 +10,7 @@ public interface AuthorService {
 
     List<AuthorResponse> getAll();
 
-    void addBook(BookRequest bookRequest);
+    void addBook(BookCreateRequest bookCreateRequest);
 
     void deleteBook(Long bookId) throws RuntimeException;
 
@@ -19,4 +19,6 @@ public interface AuthorService {
     void updateAuthor(AuthorUpdateRequest updateRequest);
 
     void updatePassword(PassUpdateRequest updateRequest);
+
+    List<ReaderResponse> getReadersByBookId(Long bookId);
 }

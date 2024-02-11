@@ -26,4 +26,10 @@ public class BookManager implements BookService {
         return books.stream().map(book -> this.modelMapperService.forResponse()
                 .map(book, BookResponse.class)).collect(Collectors.toList());
     }
+
+    @Override
+    public BookResponse getBookById(Long bookId) {
+        Book book = bookRepository.findById(bookId).orElseThrow();
+        return modelMapperService.forResponse().map(book, BookResponse.class);
+    }
 }

@@ -3,6 +3,7 @@ package com.example.book.services;
 import com.example.book.dto.*;
 import com.example.book.entites.Author;
 import com.example.book.entites.Book;
+import com.example.book.entites.Reader;
 import com.example.book.exception.BookAlreadyExists;
 import com.example.book.exception.BookNotFound;
 import com.example.book.exception.InvalidAuthenticationCredentials;
@@ -17,7 +18,6 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -41,11 +41,11 @@ public class AuthorManager implements AuthorService {
     }
 
     @Override
-    public void addBook(BookRequest bookRequest) {
+    public void addBook(BookCreateRequest bookCreateRequest) {
         Author loggedInAuthor = getLoggedInAuthor();
         List<Book> bookList = loggedInAuthor.getBookList();
 
-        Book book = modelMapperService.forRequest().map(bookRequest, Book.class);
+        Book book = modelMapperService.forRequest().map(bookCreateRequest, Book.class);
         book.setAuthor(loggedInAuthor);
         if (bookExistsInList(bookList, book)) {
             throw new BookAlreadyExists("Book already exists");
@@ -99,6 +99,15 @@ public class AuthorManager implements AuthorService {
             getLoggedInAuthor().setPassword(hashedNewPass);
             authorRepository.save(getLoggedInAuthor());
         } else throw new InvalidAuthenticationCredentials("password is wrong");
+    }
+
+    @Override
+    public List<ReaderResponse> getReadersByBookId(Long bookId) {
+        Book book = bookRepository.findById(bookId).orElseThrow();
+
+        BookResponseWithReaders bookWithReaders = modelMapperService.forResponse().map(book, BookResponseWithReaders.class);
+        return bookWithReaders.getReaders();
+
     }
 
     private boolean bookExistsInList(List<Book> bookList, Book book) {
