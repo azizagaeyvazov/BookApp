@@ -7,6 +7,9 @@ import com.example.book.repositories.BookRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,7 +24,8 @@ public class BookManager implements BookService {
     @Override
     public List<BookResponse> getAll() {
 
-        List<Book> books = bookRepository.findAll();
+        List<Book> books = bookRepository.findAllOrderedByTitle().orElseThrow();
+        books.sort(Comparator.comparing(Book::getTitle));
 
         return books.stream().map(book -> this.modelMapperService.forResponse()
                 .map(book, BookResponse.class)).collect(Collectors.toList());
@@ -31,5 +35,12 @@ public class BookManager implements BookService {
     public BookResponse getBookById(Long bookId) {
         Book book = bookRepository.findById(bookId).orElseThrow();
         return modelMapperService.forResponse().map(book, BookResponse.class);
+    }
+
+    @Override
+    public List<BookResponse> searchBooks(String searchKey) {
+        List<Book> books = bookRepository.searchBooksByNameOrSurname(searchKey.trim()).orElseThrow();
+        return books.stream().map(book -> this.modelMapperService.forResponse().map(
+                book, BookResponse.class)).collect(Collectors.toList());
     }
 }

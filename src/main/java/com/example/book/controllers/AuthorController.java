@@ -64,11 +64,16 @@ public class AuthorController {
     }
 
 
-
     @DeleteMapping("/book/{bookId}")
     public ResponseEntity<String> deleteBook(@PathVariable Long bookId){
         authorService.deleteBook(bookId);
         return ResponseEntity.ok("The book is deleted.");
+    }
+
+
+    @GetMapping("/search")
+    public List<AuthorResponse> getSearchedAuthors(@RequestParam String searchKey){
+        return authorService.searchAuthors(searchKey);
     }
 
 }

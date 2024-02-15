@@ -21,4 +21,6 @@ public interface ReaderService {
     void updateReader(ReaderUpdateRequest updateRequest);
 
     void updatePassword(PassUpdateRequest updateRequest);
+
+    List<ReaderResponse> searchReaders(String searchKey);
 }

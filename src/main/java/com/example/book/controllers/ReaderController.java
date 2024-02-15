@@ -62,4 +62,9 @@ public class ReaderController {
         readerService.deleteBookFromFavorites(bookId);
         return ResponseEntity.ok("The book is deleted from you favorite list.");
     }
+
+    @GetMapping("/search")
+    public List<ReaderResponse> searchReaders(@RequestParam String searchKey){
+        return readerService.searchReaders(searchKey);
+    }
 }

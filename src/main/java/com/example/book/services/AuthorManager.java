@@ -12,13 +12,17 @@ import com.example.book.repositories.AuthorRepository;
 import com.example.book.repositories.BookRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.annotations.NotFound;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,7 +38,8 @@ public class AuthorManager implements AuthorService {
 
     @Override
     public List<AuthorResponse> getAll() {
-        List<Author> authors = authorRepository.findAll();
+        List<Author> authors = authorRepository.findAllOrderedByName().orElseThrow();
+        authors.sort(Comparator.comparing(Author::getName));
 
         return authors.stream().map(author -> this.modelMapperService.forResponse()
                 .map(author, AuthorResponse.class)).collect(Collectors.toList());
@@ -109,6 +114,17 @@ public class AuthorManager implements AuthorService {
         return bookWithReaders.getReaders();
 
     }
+
+    @Override
+    public List<AuthorResponse> searchAuthors(String searchKey) {
+
+        List<Author> authors = authorRepository.searchAuthorsByNameOrSurname(searchKey.trim()).orElseThrow();
+        authors.sort(Comparator.comparing(Author::getName));
+
+        return authors.stream().map(author -> this.modelMapperService.forResponse().map(
+                author, AuthorResponse.class)).collect(Collectors.toList());
+    }
+
 
     private boolean bookExistsInList(List<Book> bookList, Book book) {
         for (Book existingBook : bookList) {

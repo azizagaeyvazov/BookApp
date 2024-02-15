@@ -1,9 +1,11 @@
 package com.example.book.services;
 
 import com.example.book.dto.*;
+import com.example.book.entites.Author;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public interface AuthorService {
@@ -21,4 +23,6 @@ public interface AuthorService {
     void updatePassword(PassUpdateRequest updateRequest);
 
     List<ReaderResponse> getReadersByBookId(Long bookId);
+
+    List<AuthorResponse> searchAuthors(String searchKey);
 }

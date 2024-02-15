@@ -1,9 +1,6 @@
 package com.example.book.services;
 
-import com.example.book.dto.PassUpdateRequest;
-import com.example.book.dto.ReaderDetails;
-import com.example.book.dto.ReaderResponse;
-import com.example.book.dto.ReaderUpdateRequest;
+import com.example.book.dto.*;
 import com.example.book.entites.Book;
 import com.example.book.entites.Reader;
 import com.example.book.exception.BookNotFound;
@@ -20,6 +17,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -37,7 +35,9 @@ public class ReaderManager implements ReaderService {
 
     @Override
     public List<ReaderResponse> getAll() {
-        List<Reader> readers = readerRepository.findAll();
+        List<Reader> readers = readerRepository.findAllOrderedByName().orElseThrow();
+        readers.sort(Comparator.comparing(Reader::getName));
+
         return readers.stream().map(reader -> this.modelMapperService.forResponse()
                 .map(reader, ReaderResponse.class)).collect(Collectors.toList());
     }
@@ -99,6 +99,15 @@ public class ReaderManager implements ReaderService {
             getLoggedInReader().setPassword(hashedNewPass);
             readerRepository.save(getLoggedInReader());
         } else throw new InvalidAuthenticationCredentials("password is wrong");
+    }
+
+    @Override
+    public List<ReaderResponse> searchReaders(String searchKey) {
+        List<Reader> readers = readerRepository.searchReadersByNameOrSurname(searchKey.trim()).orElseThrow();
+        readers.sort(Comparator.comparing(Reader::getName));
+
+        return readers.stream().map(reader -> this.modelMapperService.forResponse().map(
+                reader, ReaderResponse.class)).collect(Collectors.toList());
     }
 
     private boolean bookExistsInList(List<Book> bookList, Book book) {
