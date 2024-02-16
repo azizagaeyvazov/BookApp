@@ -45,12 +45,18 @@ public class AuthenticationController {
     }
 
     @PostMapping("/authenticate/reader")
-    public ResponseEntity<AuthenticationResponse> authenticate(
-            @RequestBody ReaderAuthenticationRequest request
-    ) {
+    public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody ReaderAuthenticationRequest request) {
         if (!service.validReaderUsernameAndPassword(request.getUsername(), request.getPassword())){
             throw new InvalidAuthenticationCredentials("Username or password is incorrect");
         }
         return ResponseEntity.ok(service.authenticateReader(request));
+    }
+
+    @PostMapping("/authenticate/admin")
+    public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AdminAuthenticationRequest request) {
+        if (!service.validAdminUsernameAndPassword(request.getUsername(), request.getPassword())){
+                throw new InvalidAuthenticationCredentials("Username or password is incorrect");
+            }
+            return ResponseEntity.ok(service.authenticateAdmin(request));
     }
 }

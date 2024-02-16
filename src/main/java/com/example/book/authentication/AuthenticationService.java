@@ -5,6 +5,7 @@ import com.example.book.entites.Author;
 import com.example.book.entites.Reader;
 import com.example.book.enums.Role.Role;
 import com.example.book.exception.UserAlreadyExists;
+import com.example.book.repositories.AdminRepository;
 import com.example.book.repositories.AuthorRepository;
 import com.example.book.repositories.ReaderRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,8 @@ public class AuthenticationService {
     private final AuthorRepository authorRepository;
 
     private final ReaderRepository readerRepository;
+
+    private final AdminRepository adminRepository;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -95,6 +98,23 @@ public class AuthenticationService {
                 .build();
     }
 
+
+    public AuthenticationResponse authenticateAdmin(AdminAuthenticationRequest request) {
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        request.getUsername(),
+                        request.getPassword()
+                )
+        );
+        var admin = adminRepository.findByUsername(request.getUsername())
+                .orElseThrow();
+        var jwtToken = jwtService.generateToken(admin);
+        return AuthenticationResponse.builder()
+                .token(jwtToken)
+                .build();
+    }
+
+
     public boolean authorExistsByUsername(String username) {
         Optional<Author> author = authorRepository.findByUsername(username);
         return author.isPresent();
@@ -119,6 +139,15 @@ public class AuthenticationService {
         var reader = readerRepository.findByUsername(username);
         if (reader.isPresent()) {
             String storedHashedPassword = reader.get().getPassword();
+            return BCrypt.checkpw(password, storedHashedPassword);
+        }
+        return false;
+    }
+
+    public boolean validAdminUsernameAndPassword(String username, String password) {
+        var admin = adminRepository.findByUsername(username);
+        if (admin.isPresent()) {
+            String storedHashedPassword = admin.get().getPassword();
             return BCrypt.checkpw(password, storedHashedPassword);
         }
         return false;
