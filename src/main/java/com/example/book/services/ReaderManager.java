@@ -1,14 +1,17 @@
 package com.example.book.services;
 
-import com.example.book.dto.*;
+import com.example.book.dto.PassUpdateRequest;
+import com.example.book.dto.ReaderDetailsResponse;
+import com.example.book.dto.ReaderResponse;
+import com.example.book.dto.ReaderUpdateRequest;
 import com.example.book.entites.Book;
 import com.example.book.entites.Reader;
-import com.example.book.exception.BookNotFound;
-import com.example.book.exception.InvalidAuthenticationCredentials;
+import com.example.book.exceptions.BookAlreadyExists;
+import com.example.book.exceptions.BookNotFound;
+import com.example.book.exceptions.InvalidAuthenticationCredentials;
 import com.example.book.mapper.ModelMapperService;
 import com.example.book.repositories.BookRepository;
 import com.example.book.repositories.ReaderRepository;
-import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -49,7 +52,7 @@ public class ReaderManager implements ReaderService {
         Book book = bookRepository.findById(bookId).orElseThrow(() -> new EntityNotFoundException("Book not found"));
         List<Book> favoriteList = loggedInReader.getFavoriteBooks();
         if (bookExistsInList(favoriteList, book)) {
-            throw new EntityExistsException("The book already exists in your favorite list");
+            throw new BookAlreadyExists("The book already exists in your favorite list");
         }
         loggedInReader.getFavoriteBooks().add(book);
         readerRepository.save(loggedInReader);
@@ -68,8 +71,8 @@ public class ReaderManager implements ReaderService {
     }
 
     @Override
-    public ReaderDetails getReaderDetails() {
-        return modelMapperService.forResponse().map(getLoggedInReader(), ReaderDetails.class);
+    public ReaderDetailsResponse getReaderDetails() {
+        return modelMapperService.forResponse().map(getLoggedInReader(), ReaderDetailsResponse.class);
     }
 
     @Override
@@ -124,7 +127,7 @@ public class ReaderManager implements ReaderService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication == null || !authentication.isAuthenticated() || !(authentication.getPrincipal() instanceof Reader)) {
-            throw new IllegalStateException("User not authenticated or not of Reader type");
+            throw new IllegalStateException("Reader not authenticated or not of Reader type");
         }
         return (Reader) authentication.getPrincipal();
     }

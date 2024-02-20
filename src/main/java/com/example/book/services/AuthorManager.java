@@ -3,17 +3,14 @@ package com.example.book.services;
 import com.example.book.dto.*;
 import com.example.book.entites.Author;
 import com.example.book.entites.Book;
-import com.example.book.entites.Reader;
-import com.example.book.exception.BookAlreadyExists;
-import com.example.book.exception.BookNotFound;
-import com.example.book.exception.InvalidAuthenticationCredentials;
+import com.example.book.exceptions.BookAlreadyExists;
+import com.example.book.exceptions.BookNotFound;
+import com.example.book.exceptions.InvalidAuthenticationCredentials;
 import com.example.book.mapper.ModelMapperService;
 import com.example.book.repositories.AuthorRepository;
 import com.example.book.repositories.BookRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.annotations.NotFound;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -22,7 +19,6 @@ import org.springframework.stereotype.Service;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -73,8 +69,8 @@ public class AuthorManager implements AuthorService {
     }
 
     @Override
-    public AuthorDetails getAuthorDetails() {
-        return modelMapperService.forResponse().map(getLoggedInAuthor(), AuthorDetails.class);
+    public AuthorDetailsResponse getAuthorDetails() {
+        return modelMapperService.forResponse().map(getLoggedInAuthor(), AuthorDetailsResponse.class);
     }
 
     @Override

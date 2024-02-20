@@ -14,9 +14,10 @@ services:
     volumes:
       - db:/var/lib/postgres
   app:
+    build:
+      dockerfile: Dockerfile
     depends_on:
       - postgresdb
-    build: ./
     restart: on-failure
     env_file: ./.env
     ports:
@@ -26,6 +27,7 @@ services:
         SPRING_DATASOURCE_USERNAME: "postgres"
         SPRING_DATASOURCE_PASSWORD: "12345"
         SPRING_JPA_HIBERNATE_DDL_AUTO: "update"
+        DB_HOST: postgresdb
     volumes:
       - .m2:/root/.m2
     stdin_open: true

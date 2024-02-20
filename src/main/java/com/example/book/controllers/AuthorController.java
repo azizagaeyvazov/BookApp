@@ -23,7 +23,7 @@ public class AuthorController {
 
 
     @GetMapping("/me")
-    public AuthorDetails getAuthorDetails(){
+    public AuthorDetailsResponse getAuthorDetails(){
         return authorService.getAuthorDetails();
     }
 

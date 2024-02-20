@@ -23,7 +23,7 @@ public class ReaderController {
     }
 
     @GetMapping("/me")
-    public ReaderDetails getReaderDetails(){
+    public ReaderDetailsResponse getReaderDetails(){
         return readerService.getReaderDetails();
     }
 
