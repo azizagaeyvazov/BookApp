@@ -16,12 +16,12 @@ public class AdminController {
 
 
     @DeleteMapping("/author/{authorId}")
-    public void deleteAuthor(@PathVariable Long authorId){
+    public void deleteAuthor(@PathVariable Long authorId) {
         adminService.deleteAuthorById(authorId);
     }
 
     @DeleteMapping("/reader/{readerId}")
-    public void deleteReader(@PathVariable Long readerId){
+    public void deleteReader(@PathVariable Long readerId) {
         adminService.deleteReaderById(readerId);
     }
 }

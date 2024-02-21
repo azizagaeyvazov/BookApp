@@ -7,6 +7,7 @@ import com.example.book.dto.ReaderUpdateRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 @Service
 public interface ReaderService {
 

@@ -37,11 +37,11 @@ public class ApiExceptionHandler {
                 ZonedDateTime.now(ZoneId.of("Z"))
         );
 
-        return new ResponseEntity<>(apiException,  badRequest);
+        return new ResponseEntity<>(apiException, badRequest);
     }
 
     @ExceptionHandler(value = {UserAlreadyExists.class})
-    public ResponseEntity<Object> handleApiRequestException(UserAlreadyExists e){
+    public ResponseEntity<Object> handleApiRequestException(UserAlreadyExists e) {
         HttpStatus badRequest = HttpStatus.BAD_REQUEST;
 
         ApiException apiException = new ApiException(
@@ -49,11 +49,11 @@ public class ApiExceptionHandler {
                 badRequest,
                 ZonedDateTime.now(ZoneId.of("Z"))
         );
-        return new ResponseEntity<>(apiException,  badRequest);
+        return new ResponseEntity<>(apiException, badRequest);
     }
 
     @ExceptionHandler(value = {UserNotFound.class})
-    public ResponseEntity<Object> handleApiRequestException(UserNotFound e){
+    public ResponseEntity<Object> handleApiRequestException(UserNotFound e) {
         HttpStatus badRequest = HttpStatus.BAD_REQUEST;
 
         ApiException apiException = new ApiException(
@@ -61,11 +61,11 @@ public class ApiExceptionHandler {
                 badRequest,
                 ZonedDateTime.now(ZoneId.of("Z"))
         );
-        return new ResponseEntity<>(apiException,  badRequest);
+        return new ResponseEntity<>(apiException, badRequest);
     }
 
     @ExceptionHandler(value = {InvalidAuthenticationCredentials.class})
-    public ResponseEntity<Object> handleApiRequestException(InvalidAuthenticationCredentials e){
+    public ResponseEntity<Object> handleApiRequestException(InvalidAuthenticationCredentials e) {
         HttpStatus badRequest = HttpStatus.BAD_REQUEST;
 
         ApiException apiException = new ApiException(
@@ -73,6 +73,6 @@ public class ApiExceptionHandler {
                 badRequest,
                 ZonedDateTime.now(ZoneId.of("Z"))
         );
-        return new ResponseEntity<>(apiException,  badRequest);
+        return new ResponseEntity<>(apiException, badRequest);
     }
 }

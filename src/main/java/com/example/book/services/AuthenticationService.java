@@ -36,7 +36,7 @@ public class AuthenticationService {
 
     private final AuthenticationManager authenticationManager;
 
-    public AuthenticationResponse registerForAuthor(AuthorRegisterRequest request) throws UserAlreadyExists{
+    public AuthenticationResponse registerForAuthor(AuthorRegisterRequest request) throws UserAlreadyExists {
         if (authorExistsByUsername(request.getUsername())) {
             throw new UserAlreadyExists("Username already exists");
         }

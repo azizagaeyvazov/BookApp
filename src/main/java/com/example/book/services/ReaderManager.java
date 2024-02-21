@@ -77,17 +77,17 @@ public class ReaderManager implements ReaderService {
 
     @Override
     public void updateReader(ReaderUpdateRequest updateRequest) {
-        if (updateRequest == null){
+        if (updateRequest == null) {
             throw new NullPointerException("request parameters can not be null");
         }
-        if (updateRequest.getName() != null){
-            if (updateRequest.getName().isBlank()){
+        if (updateRequest.getName() != null) {
+            if (updateRequest.getName().isBlank()) {
                 throw new NullPointerException("name can not be blank");
             }
             getLoggedInReader().setName(updateRequest.getName());
         }
-        if (updateRequest.getSurname() != null){
-            if (updateRequest.getSurname().isBlank()){
+        if (updateRequest.getSurname() != null) {
+            if (updateRequest.getSurname().isBlank()) {
                 throw new NullPointerException("surname can not be blank");
             }
             getLoggedInReader().setSurname(updateRequest.getSurname());

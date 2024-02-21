@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class AdminManager implements AdminService{
+public class AdminManager implements AdminService {
 
     private final AuthorRepository authorRepository;
 

@@ -15,17 +15,17 @@ public class BookController {
     private final BookService bookService;
 
     @GetMapping
-    public List<BookResponse> getAllBooks(){
+    public List<BookResponse> getAllBooks() {
         return bookService.getAll();
     }
 
     @GetMapping("/{bookId}")
-    public BookResponse getBookById(@PathVariable Long bookId){
+    public BookResponse getBookById(@PathVariable Long bookId) {
         return bookService.getBookById(bookId);
     }
 
     @GetMapping("/search")
-    public List<BookResponse> searchBooks(@RequestParam String searchKey){
+    public List<BookResponse> searchBooks(@RequestParam String searchKey) {
         return bookService.searchBooks(searchKey);
     }
 }

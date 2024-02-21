@@ -37,9 +37,8 @@ public class AuthenticationController {
     @PostMapping("/authenticate/author")
     public ResponseEntity<AuthenticationResponse> authenticate(
             @Valid @RequestBody AuthorAuthenticationRequest request
-    )
-    {
-        if (!service.validAuthorUsernameAndPassword(request.getUsername(), request.getPassword())){
+    ) {
+        if (!service.validAuthorUsernameAndPassword(request.getUsername(), request.getPassword())) {
             throw new InvalidAuthenticationCredentials("Username or password is incorrect");
         }
         return ResponseEntity.ok(service.authenticateAuthor(request));
@@ -47,7 +46,7 @@ public class AuthenticationController {
 
     @PostMapping("/authenticate/reader")
     public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody ReaderAuthenticationRequest request) {
-        if (!service.validReaderUsernameAndPassword(request.getUsername(), request.getPassword())){
+        if (!service.validReaderUsernameAndPassword(request.getUsername(), request.getPassword())) {
             throw new InvalidAuthenticationCredentials("Username or password is incorrect");
         }
         return ResponseEntity.ok(service.authenticateReader(request));
@@ -55,9 +54,9 @@ public class AuthenticationController {
 
     @PostMapping("/authenticate/admin")
     public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AdminAuthenticationRequest request) {
-        if (!service.validAdminUsernameAndPassword(request.getUsername(), request.getPassword())){
-                throw new InvalidAuthenticationCredentials("Username or password is incorrect");
-            }
-            return ResponseEntity.ok(service.authenticateAdmin(request));
+        if (!service.validAdminUsernameAndPassword(request.getUsername(), request.getPassword())) {
+            throw new InvalidAuthenticationCredentials("Username or password is incorrect");
+        }
+        return ResponseEntity.ok(service.authenticateAdmin(request));
     }
 }
