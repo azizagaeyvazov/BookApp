@@ -2,6 +2,7 @@ package com.example.book.controllers;
 
 import com.example.book.services.AdminService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,12 +17,14 @@ public class AdminController {
 
 
     @DeleteMapping("/author/{authorId}")
-    public void deleteAuthor(@PathVariable Long authorId) {
+    public ResponseEntity<String> deleteAuthor(@PathVariable Long authorId) {
         adminService.deleteAuthorById(authorId);
+        return ResponseEntity.ok("Author is deleted");
     }
 
     @DeleteMapping("/reader/{readerId}")
-    public void deleteReader(@PathVariable Long readerId) {
+    public ResponseEntity<String> deleteReader(@PathVariable Long readerId) {
         adminService.deleteReaderById(readerId);
+        return ResponseEntity.ok("Reader is deleted");
     }
 }
