@@ -29,9 +29,3 @@ public class BookController {
     public List<BookResponse> searchBooks(@RequestParam String searchKey) {
         return bookService.searchBooks(searchKey);
     }
-
-    @GetMapping("test")
-    public String test() {
-        return "test";
-    }
-}
