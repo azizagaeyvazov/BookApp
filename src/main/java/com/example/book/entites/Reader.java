@@ -1,6 +1,6 @@
 package com.example.book.entites;
 
-import com.example.book.enums.Role.Role;
+import com.example.book.enums.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

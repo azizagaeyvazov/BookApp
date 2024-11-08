@@ -30,6 +30,8 @@ public class SecurityConfiguration {
                                 .permitAll()
                                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**")
                                 .permitAll()
+                                .requestMatchers("api/book-app/books/**")
+                                .permitAll()
                                 .anyRequest()
                                 .authenticated())
                 .sessionManagement((sessionManagement) ->

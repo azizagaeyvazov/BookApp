@@ -4,8 +4,10 @@ import com.example.book.config.security.JwtService;
 import com.example.book.dto.*;
 import com.example.book.entites.Author;
 import com.example.book.entites.Reader;
-import com.example.book.enums.Role.Role;
+import com.example.book.enums.Role;
+import com.example.book.exceptions.InvalidAuthenticationCredentials;
 import com.example.book.exceptions.UserAlreadyExists;
+import com.example.book.exceptions.UsernameAlreadyExists;
 import com.example.book.repositories.AdminRepository;
 import com.example.book.repositories.AuthorRepository;
 import com.example.book.repositories.ReaderRepository;
@@ -55,6 +57,9 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse registerForReader(ReaderRegisterRequest request) {
+        if (readerExistsByUsername(request.getUsername())) {
+            throw new UsernameAlreadyExists("Username already exists");
+        }
         var reader = Reader.builder()
                 .name(request.getName())
                 .surname(request.getSurname())
@@ -70,6 +75,9 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse authenticateAuthor(AuthorAuthenticationRequest request) {
+        if (!validAuthorUsernameAndPassword(request.getUsername(), request.getPassword())) {
+            throw new InvalidAuthenticationCredentials("Username or password is incorrect");
+        }
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getUsername(),
@@ -85,6 +93,9 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse authenticateReader(ReaderAuthenticationRequest request) {
+        if (!validReaderUsernameAndPassword(request.getUsername(), request.getPassword())) {
+            throw new InvalidAuthenticationCredentials("Username or password is incorrect");
+        }
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getUsername(),
@@ -101,6 +112,9 @@ public class AuthenticationService {
 
 
     public AuthenticationResponse authenticateAdmin(AdminAuthenticationRequest request) {
+        if (!validAdminUsernameAndPassword(request.getUsername(), request.getPassword())) {
+            throw new InvalidAuthenticationCredentials("Username or password is incorrect");
+        }
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getUsername(),

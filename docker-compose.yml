@@ -1,33 +1,33 @@
 version: "3.8"
 
 services:
-  postgresdb:
+  postgres:
     image: postgres
     restart: unless-stopped
     env_file: ./.env
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=12345
-      - POSTGRES_DB=BookDB
+      - POSTGRES_USER=postgresql
+      - POSTGRES_PASSWORD=g55iQpmH1zhoHNmkAl2UzCxWCoHuPId9
+      - POSTGRES_DB=book_db_kvd3
     ports:
-      - 5432:5432
+      - "5432:5432"
     volumes:
       - db:/var/lib/postgres
   app:
     build:
       dockerfile: Dockerfile
     depends_on:
-      - postgresdb
+      - postgres
     restart: on-failure
     env_file: ./.env
     ports:
-      - 8080:8080
+      - "8080:8080"
     environment:
-        SPRING_DATASOURCE_URL: "jdbc:postgresql://postgresdb:5432/BookDB"
-        SPRING_DATASOURCE_USERNAME: "postgres"
-        SPRING_DATASOURCE_PASSWORD: "12345"
+        SPRING_DATASOURCE_URL: "jdbc:postgresql://dpg-csmt2c1u0jms73ft0b20-a.oregon-postgres.render.com:5432/book_db_kvd3"
+        SPRING_DATASOURCE_USERNAME: "postgresql"
+        SPRING_DATASOURCE_PASSWORD: "g55iQpmH1zhoHNmkAl2UzCxWCoHuPId9"
         SPRING_JPA_HIBERNATE_DDL_AUTO: "update"
-        DB_HOST: postgresdb
+        DB_HOST: dpg-csmt2c1u0jms73ft0b20-a.oregon-postgres.render.com
     volumes:
       - .m2:/root/.m2
     stdin_open: true
