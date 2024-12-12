@@ -6,9 +6,9 @@ services:
     restart: unless-stopped
     env_file: ./.env
     environment:
-      - POSTGRES_USER=postgresql
-      - POSTGRES_PASSWORD=g55iQpmH1zhoHNmkAl2UzCxWCoHuPId9
-      - POSTGRES_DB=book_db_kvd3
+      - POSTGRES_USER=book_db_6paj_user
+      - POSTGRES_PASSWORD=AZ5YIqzTyBNYSo5BYwMaskcap4jImTO9
+      - POSTGRES_DB=book_db_6paj
     ports:
       - "5432:5432"
     volumes:
@@ -23,9 +23,9 @@ services:
     ports:
       - "8080:8080"
     environment:
-        SPRING_DATASOURCE_URL: "jdbc:postgresql://dpg-csmt2c1u0jms73ft0b20-a.oregon-postgres.render.com:5432/book_db_kvd3"
-        SPRING_DATASOURCE_USERNAME: "postgresql"
-        SPRING_DATASOURCE_PASSWORD: "g55iQpmH1zhoHNmkAl2UzCxWCoHuPId9"
+        SPRING_DATASOURCE_URL: "jdbc:postgresql://dpg-ctdaho56l47c739602qg-a.oregon-postgres.render.com:5432/book_db_6paj"
+        SPRING_DATASOURCE_USERNAME: "book_db_6paj_user"
+        SPRING_DATASOURCE_PASSWORD: "AZ5YIqzTyBNYSo5BYwMaskcap4jImTO9"
         SPRING_JPA_HIBERNATE_DDL_AUTO: "update"
         DB_HOST: dpg-csmt2c1u0jms73ft0b20-a.oregon-postgres.render.com
     volumes:
