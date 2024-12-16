@@ -16,8 +16,8 @@ FROM openjdk:17-slim
 # Set the working directory in the container
 WORKDIR /app
 
-# Copy the JAR file from the build stage to the current stage
-COPY --from=build /app/target/demo-0.0.1-SNAPSHOT.jar .
+# Copy the JAR file from the build context (target directory)
+COPY target/demo-0.0.1-SNAPSHOT.jar demo-0.0.1-SNAPSHOT.jar
 
 # Expose the port the app runs on
 EXPOSE 8080
