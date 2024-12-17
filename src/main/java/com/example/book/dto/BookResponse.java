@@ -1,11 +1,12 @@
 package com.example.book.dto;
 
-import lombok.Data;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class BookResponse {
-
-    private Long id;
 
     private String title;
 

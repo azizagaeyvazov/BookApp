@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("api/book-app/admin")
+@RequestMapping("api/book-app")
 @RequiredArgsConstructor
 public class AdminController {
 
@@ -17,14 +17,14 @@ public class AdminController {
 
 
     @DeleteMapping("/author/{authorId}")
-    public ResponseEntity<String> deleteAuthor(@PathVariable Long authorId) {
+    public ResponseEntity<Void> deleteAuthor(@PathVariable Long authorId) {
         adminService.deleteAuthorById(authorId);
-        return ResponseEntity.ok("Author is deleted");
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/reader/{readerId}")
     public ResponseEntity<String> deleteReader(@PathVariable Long readerId) {
         adminService.deleteReaderById(readerId);
-        return ResponseEntity.ok("Reader is deleted");
+        return ResponseEntity.noContent().build();
     }
 }

@@ -2,17 +2,17 @@ package com.example.book.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class ReaderAuthenticationRequest {
 
+    @NotBlank(message = "username can not be empty")
     private String username;
 
+    @NotBlank(message = "password can not be empty")
     private String password;
 }

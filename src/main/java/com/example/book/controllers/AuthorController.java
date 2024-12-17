@@ -32,7 +32,6 @@ public class AuthorController {
         return authorService.getReadersByBookId(bookId);
     }
 
-
     @PostMapping("/book")
     public ResponseEntity<String> addBook(@Valid @RequestBody BookCreateRequest bookCreateRequest) {
         try {

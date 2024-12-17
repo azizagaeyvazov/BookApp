@@ -1,10 +1,13 @@
 package com.example.book.dto;
 
-import lombok.Data;
+import lombok.*;
 
 import java.util.List;
 
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class ReaderResponse {
 
     private String name;

@@ -1,19 +1,25 @@
 package com.example.book.entites;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.util.List;
 
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
-@Data
 public class Book {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    String title;
+    @Column(nullable = false)
+    private String title;
+
+    @Column(nullable = false)
     private Long page;
 
     @ManyToOne
