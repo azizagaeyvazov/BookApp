@@ -18,7 +18,7 @@ This Spring Boot-based Book App is designed for authors, readers, and administra
 ### Technologies Used
 
 - **Spring Boot**: Backend framework for building the application.
-- **JWT (JSON Web Token)**: Authentication and authorization mechanism.
+- **Spring Security**: Authentication and authorization mechanism.
 - **Docker**: Containerization for easy deployment.
 - **Swagger**: API documentation and testing interface.
 - **PostgreSQL**: Remote database to store book and user data in Render.
@@ -39,16 +39,6 @@ To run the application using Docker, follow these steps:
     docker run -p 8080:8080 azizeyvazov02/book-app:latest
 
 The app will be accessible at http://localhost:8080.
-
-### Installation
-1. Build the project:
-   ```bash
-   mvn clean install
-   ```
-2. Run the application:
-   ```bash
-   mvn spring-boot:run
-   ```
 
 ### Swagger UI
 You can test the API using Swagger by navigating to the following URL after starting the application:
